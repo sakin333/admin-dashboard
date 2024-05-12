@@ -1,0 +1,25 @@
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-form-card {
+    min-width: 400px;
+    width: 440px;
+    padding: 24px;
+}
+
+.login-form-title {
+    text-align: center;
+}
+
+.login-form-forgot-passsword {
+    float: right;
+}
+
+.login-form-button {
+    width: 100%;
+    margin-bottom: 16px;
+}

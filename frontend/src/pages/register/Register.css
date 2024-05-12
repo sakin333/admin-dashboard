@@ -1,0 +1,25 @@
+.register-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.register-form-card {
+    min-width: 400px;
+    width: 440px;
+    padding: 24px;
+}
+
+.register-form-title {
+    text-align: center;
+}
+
+.register-form-forgot-passsword {
+    float: right;
+}
+
+.register-form-button {
+    width: 100%;
+    margin-bottom: 16px;
+}
