@@ -1,6 +1,7 @@
 require("./database/config");
 
 const User = require("./database/user");
+const Events = require("./database/upcomingEvents");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -14,6 +15,21 @@ app.use(cors());
 
 app.post("/register", async (req, res) => {
   res.json("hello world");
+});
+
+app.get("/eventsList", async (req, res) => {
+  const result = await Events.find();
+  if (result) {
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } else {
+    res.status(400).json({
+      success: false,
+      error: "No events data found",
+    });
+  }
 });
 
 app.listen(port, () => {
