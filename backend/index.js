@@ -2,6 +2,7 @@ require("./database/config");
 
 const User = require("./database/user");
 const Events = require("./database/upcomingEvents");
+const Deals = require("./database/deals");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -28,6 +29,21 @@ app.get("/eventsList", async (req, res) => {
     res.status(400).json({
       success: false,
       error: "No events data found",
+    });
+  }
+});
+
+app.get("/deals", async (req, res) => {
+  const result = await Deals.find();
+  if (result) {
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } else {
+    res.status(400).json({
+      success: false,
+      error: "No deals found",
     });
   }
 });

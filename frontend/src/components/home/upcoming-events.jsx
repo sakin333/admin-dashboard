@@ -57,7 +57,7 @@ const UpcomingEvents = () => {
         <List
           itemLayout="horizontal"
           dataSource={
-            events.events?.data.sort(
+            events.events?.data?.sort(
               (a, b) => new Date(a.startDate) - new Date(b.startDate)
             ) ?? []
           }
