@@ -1,20 +1,60 @@
 import React, { useState } from "react";
 import HeaderComponent from "../../components/layout/header";
-import { Layout, Menu, Row, Col } from "antd";
+import { Layout, Menu } from "antd";
 import {
   DashboardOutlined,
   LogoutOutlined,
   ProjectOutlined,
   ShopOutlined,
 } from "@ant-design/icons";
+import Dashboard from "../dashboard/dashboard";
 
 import "./Home.css";
-import { DealsCharts, UpcomingEvents } from "../../components";
+import CompanyList from "../company/company-list";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 const { Sider, Content, Header } = Layout;
 
+const menuLinks = [
+  {
+    key: "1",
+    icon: <DashboardOutlined />,
+    label: "Dashboard",
+    to: "/dashboard",
+  },
+  {
+    key: "2",
+    icon: <ShopOutlined />,
+    label: "Companies",
+    to: "/companies",
+  },
+  {
+    key: "3",
+    icon: <ProjectOutlined />,
+    label: "Tasks",
+    to: "/tasks",
+  },
+  {
+    key: "4",
+    icon: <LogoutOutlined />,
+    label: "Logout",
+    to: null,
+  },
+];
+
 const Home = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+
+  const handleMenuClick = (e) => {
+    const selectedMenu = menuLinks.find((menu) => menu.key === e.key);
+    if (selectedMenu && selectedMenu.key !== "4") {
+      navigate(selectedMenu.to);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <Layout>
       <Sider
@@ -26,31 +66,7 @@ const Home = () => {
       >
         <div className="home-logo">Logo</div>
 
-        <Menu
-          mode="inline"
-          items={[
-            {
-              key: "1",
-              icon: <DashboardOutlined />,
-              label: "Dashboard",
-            },
-            {
-              key: "2",
-              icon: <ShopOutlined />,
-              label: "Companies",
-            },
-            {
-              key: "3",
-              icon: <ProjectOutlined />,
-              label: "Tasks",
-            },
-            {
-              key: "4",
-              icon: <LogoutOutlined />,
-              label: "Logout",
-            },
-          ]}
-        />
+        <Menu mode="inline" onClick={handleMenuClick} items={menuLinks} />
       </Sider>
       <Layout>
         <Header
@@ -61,36 +77,7 @@ const Home = () => {
           <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />
         </Header>
         <Content>
-          <Row
-            gutter={[32, 32]}
-            style={{
-              border: "1px solid red",
-              margin: "16px 0 0 0",
-            }}
-          >
-            <Col
-              xs={24}
-              sm={24}
-              xl={8}
-              style={{
-                height: "460px",
-                border: "1px solid blue",
-              }}
-            >
-              <UpcomingEvents />
-            </Col>
-            <Col
-              xs={24}
-              sm={24}
-              xl={8}
-              style={{
-                height: "460px",
-                border: "1px solid blue",
-              }}
-            >
-              <DealsCharts />
-            </Col>
-          </Row>
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
