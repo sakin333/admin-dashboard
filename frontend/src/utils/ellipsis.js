@@ -1,4 +1,4 @@
-export const ellipsis = (value, maxLength = 10) => {
+export const ellipsis = (value, maxLength = 50) => {
   if (value.length <= maxLength) {
     return value;
   }

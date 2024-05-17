@@ -12,7 +12,7 @@ const DealsCharts = () => {
 
   useEffect(() => {
     dispatch(fetchDeals());
-  }, []);
+  }, [dispatch]);
 
   const dealData = useMemo(() => {
     return mapDealsData(deals.deals?.data);

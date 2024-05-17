@@ -9,6 +9,7 @@ import {
   CompanyList,
   CreateCompany,
 } from "./pages/index";
+import List from "./pages/tasks/list";
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
           <Route path="companies">
             <Route index element={<CompanyList />} />
             <Route path="new" element={<CreateCompany />} />
+          </Route>
+          <Route path="tasks">
+            <Route index element={<List />} />
           </Route>
         </Route>
       </Routes>

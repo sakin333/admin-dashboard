@@ -8,15 +8,12 @@ import { renderDate } from "../../utils/dateFormat";
 import { ellipsis } from "../../utils/ellipsis";
 
 const UpcomingEvents = () => {
-  const [eventsData, setEventsData] = useState();
-
   const events = useSelector((state) => state.event);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchEvents());
-    setEventsData(events.events.data);
-  }, []);
+  }, [dispatch]);
 
   return (
     <Card
