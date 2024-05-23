@@ -13,6 +13,7 @@ const HeaderComponent = ({ collapsed, setCollapsed }) => {
     position: "sticky",
     top: 0,
     zIndexx: 999,
+    height: "7vh",
   };
 
   return (

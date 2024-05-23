@@ -1,6 +1,4 @@
-export const BASE_URL = "http://localhost:4000";
-
-export const stages = [
+const stages = [
   {
     stageId: "stage-0",
     value: "UNASSIGNED",

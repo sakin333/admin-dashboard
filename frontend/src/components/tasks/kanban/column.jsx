@@ -3,17 +3,22 @@ import { Badge, Button, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import React from "react";
 
-const KanbanColumn = ({ children }) => {
-  const { isOver, setNodeRef, active } = useDroppable({
-    id: "",
-    data: "",
+const KanbanColumn = ({
+  children,
+  id,
+  title,
+  description,
+  count,
+  data,
+  onAddClick,
+}) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id: id,
   });
 
-  const count = 2;
-  const title = "Title";
-  const description = "Description";
-
-  const handleAddClick = () => {};
+  const handleAddClick = () => {
+    onAddClick?.({ id });
+  };
 
   return (
     <div
@@ -22,13 +27,12 @@ const KanbanColumn = ({ children }) => {
         display: "flex",
         flexDirection: "column",
         padding: "0 16px",
-        border: "1px solid red",
+        width: "310px",
       }}
     >
       <div
         style={{
           padding: "12px",
-          border: "1px solid red",
         }}
       >
         <Space style={{ width: "100%", justifyContent: "space-between" }}>
@@ -51,21 +55,20 @@ const KanbanColumn = ({ children }) => {
             onClick={handleAddClick}
           />
         </Space>
-        {description}
       </div>
       <div
         style={{
           flex: 1,
-          overflowY: active ? "unset" : "scroll",
           border: "2px dashed transparent",
           borderColor: isOver ? "#000040" : "transparent",
           borderRadius: "4px",
+          maxHeight: "calc(93vh - 200px)",
+          overflowY: "auto",
         }}
       >
         <div
           style={{
             marginTop: "12px",
-            border: "1px solid red",
             display: "flex",
             flexDirection: "column",
             padding: "0 16px",
