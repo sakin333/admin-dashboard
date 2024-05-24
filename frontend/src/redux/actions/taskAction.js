@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  DELETE_TASK_FAILURE,
+  DELETE_TASK_REQUEST,
+  DELETE_TASK_SUCCESS,
   FETCH_TASKS_FAILURE,
   FETCH_TASKS_REQUEST,
   FETCH_TASKS_SUCCESS,
@@ -80,6 +83,41 @@ export const updateTask = (taskId, overColumnId, activeTaskStageId) => {
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(updateTaskFailure(errorMsg));
+      });
+  };
+};
+
+export const deleteTaskRequest = () => {
+  return {
+    type: DELETE_TASK_REQUEST,
+  };
+};
+
+export const deleteTaskSuccess = (taskId) => {
+  return {
+    type: DELETE_TASK_SUCCESS,
+    payload: taskId,
+  };
+};
+
+export const deleteTaskFailure = (error) => {
+  return {
+    type: DELETE_TASK_FAILURE,
+    payload: error,
+  };
+};
+
+export const deleteTask = (taskId) => {
+  return (dispatch) => {
+    dispatch(deleteTaskRequest());
+    axios
+      .post(`${BASE_URL}/deleteTask?taskId=${taskId}`)
+      .then((response) => {
+        dispatch(deleteTaskSuccess(taskId));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(deleteTaskFailure(errorMsg));
       });
   };
 };

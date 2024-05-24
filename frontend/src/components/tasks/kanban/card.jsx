@@ -1,5 +1,13 @@
-import React, { useMemo } from "react";
-import { Avatar, Card, Dropdown, Space, Tag, Tooltip } from "antd";
+import React, { useMemo, useState } from "react";
+import {
+  Avatar,
+  Card,
+  Dropdown,
+  Space,
+  Tag,
+  Tooltip,
+  notification,
+} from "antd";
 import {
   ClockCircleOutlined,
   DeleteOutlined,
@@ -9,22 +17,38 @@ import {
 import dayjs from "dayjs";
 import { getDateColor } from "../../../utils/dateColor";
 import { ellipsis } from "../../../utils/ellipsis";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../../redux/actions/taskAction";
+import { snackbar } from "../../../utils/snackbar";
 
 const ProjectCard = ({ id, title, dueDate, users }) => {
+  const [api, contextHolder] = notification.useNotification();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const deleteCard = () => {
+    dispatch(deleteTask(id));
+    snackbar(api, "Task deleted successfully", <DeleteOutlined />);
+  };
+
   const dropdownItems = useMemo(() => {
     const dropdownItems = [
       {
         label: "View card",
         key: "1",
         icon: <EyeOutlined />,
-        onClick: () => {},
+        onClick: () => {
+          navigate(`edit/${id}`);
+        },
       },
       {
         danger: true,
         label: "Delete card",
         key: "2",
         icon: <DeleteOutlined />,
-        onClick: () => {},
+        onClick: deleteCard,
       },
     ];
     return dropdownItems;
@@ -40,6 +64,7 @@ const ProjectCard = ({ id, title, dueDate, users }) => {
       text: date.format("MMM DD"),
     };
   }, [dueDate]);
+
   return (
     <Card
       size="small"

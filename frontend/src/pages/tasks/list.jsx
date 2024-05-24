@@ -14,10 +14,15 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useNavigate } from "react-router-dom";
+import { showModal } from "../../redux/actions/modalAction";
 
-const List = () => {
+const List = ({ children }) => {
   const { tasks, loading } = useSelector((state) => state.task);
+  const modalState = useSelector((state) => state.modal);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -40,70 +45,77 @@ const List = () => {
   const getTaskByStatus = (status) =>
     taskStages.filter((task) => task.stage === status);
 
-  const handleAddCard = (args) => {};
+  const handleAddCard = (label) => () => {
+    dispatch(showModal());
+    console.log(modalState);
+    navigate(`new?stage=${label}`);
+  };
 
   const handleUpdateTask = (taskId, activeTaskStageId, overColumnId) => {
     dispatch(updateTask(taskId, overColumnId, activeTaskStageId));
   };
 
   return (
-    <div
-      style={{
-        height: "93vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {loading ? (
-        <Spin tip="Loading" size="large" style={{ marginTop: "-120px" }} />
-      ) : (
-        <KanbanBoardContainer>
-          <KanbanBoard tasks={taskStages} handleUpdateTask={handleUpdateTask}>
-            <Row gutter={20} style={{ padding: 16 }}>
-              {stages.map((stage) => (
-                <SortableContext
-                  key={stage.stageId}
-                  items={getTaskByStatus(stage.value).map((task) => task._id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  <KanbanColumn
-                    id={stage.stageId}
-                    title={stage.value}
-                    count={getTaskByStatus(stage.value).length || 0}
-                    onAddClick={handleAddCard}
+    <>
+      <div
+        style={{
+          height: "93vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {loading ? (
+          <Spin tip="Loading" size="large" style={{ marginTop: "-120px" }} />
+        ) : (
+          <KanbanBoardContainer>
+            <KanbanBoard tasks={taskStages} handleUpdateTask={handleUpdateTask}>
+              <Row gutter={20} style={{ padding: 16 }}>
+                {stages.map((stage) => (
+                  <SortableContext
+                    key={stage.stageId}
+                    items={getTaskByStatus(stage.value).map((task) => task._id)}
+                    strategy={verticalListSortingStrategy}
                   >
-                    {getTaskByStatus(stage.value).length !== 0 &&
-                      getTaskByStatus(stage.value).map((task) => (
-                        <KanbanItem key={task._id} id={task._id} data={task}>
-                          <ProjectCard
-                            id={task._id}
-                            title={task.title}
-                            dueDate={task.dueDate}
-                            users={task.users}
-                          />
-                        </KanbanItem>
-                      ))}
-                    {getTaskByStatus(stage.value).length === 0 && (
-                      <p
-                        style={{
-                          textAlign: "center",
-                          opacity: 0.6,
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        No Task
-                      </p>
-                    )}
-                  </KanbanColumn>
-                </SortableContext>
-              ))}
-            </Row>
-          </KanbanBoard>
-        </KanbanBoardContainer>
-      )}
-    </div>
+                    <KanbanColumn
+                      id={stage.stageId}
+                      title={stage.value}
+                      count={getTaskByStatus(stage.value).length || 0}
+                      onAddClick={handleAddCard(stage.label)}
+                    >
+                      {getTaskByStatus(stage.value).length !== 0 &&
+                        getTaskByStatus(stage.value).map((task) => (
+                          <KanbanItem key={task._id} id={task._id} data={task}>
+                            <ProjectCard
+                              id={task._id}
+                              title={task.title}
+                              dueDate={task.dueDate}
+                              users={task.users}
+                            />
+                          </KanbanItem>
+                        ))}
+                      {getTaskByStatus(stage.value).length === 0 && (
+                        <p
+                          style={{
+                            textAlign: "center",
+                            opacity: 0.6,
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          No Task
+                        </p>
+                      )}
+                    </KanbanColumn>
+                  </SortableContext>
+                ))}
+              </Row>
+            </KanbanBoard>
+          </KanbanBoardContainer>
+        )}
+      </div>
+      {children}
+    </>
   );
 };
 

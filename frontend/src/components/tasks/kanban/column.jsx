@@ -17,7 +17,7 @@ const KanbanColumn = ({
   });
 
   const handleAddClick = () => {
-    onAddClick?.({ id });
+    onAddClick?.(title);
   };
 
   return (

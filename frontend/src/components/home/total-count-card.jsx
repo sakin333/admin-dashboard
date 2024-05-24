@@ -1,64 +1,37 @@
 import React from "react";
 import { Card } from "antd";
 import { ProfileOutlined } from "@ant-design/icons";
-import { Area } from "@ant-design/plots";
+import { Area, Pie } from "@ant-design/plots";
 
-const DashboardTotalCountCard = () => {
+const DashboardTotalCountCard = ({ title, icon, total, data }) => {
   const config = {
-    data: [
-      {
-        index: 1,
-        value: 1000,
-      },
-      {
-        index: 2,
-        value: 3000,
-      },
-      {
-        index: 3,
-        value: 2000,
-      },
-      {
-        index: 4,
-        value: 500,
-      },
-      {
-        index: 5,
-        value: 1000,
-      },
-      {
-        index: 6,
-        value: 4000,
-      },
-      {
-        index: 7,
-        value: 4500,
-      },
-    ],
-    xField: "index",
-    yField: "value",
-    padding: 0,
-    syncViewPadding: true,
-    tooltip: false,
-    animation: false,
-    xAxis: false,
-    yAxis: {
-      label: {
+    appendPadding: 10,
+    data,
+    angleField: "value",
+    colorField: "type",
+    radius: 0.8,
+    innerRadius: 0.6,
+    legend: false,
+    tooltip: true,
+    label: false,
+    statistic: {
+      title: false,
+      content: {
         style: {
-          stroke: "transparent",
+          fontSize: "12px",
+          fontWeight: "bold",
         },
-      },
-      grid: {
-        line: {
-          style: {
-            stroke: "transparent",
-          },
-        },
+        formatter: () => `${total}`,
       },
     },
-    smooth: true,
-    line: {
-      color: "green",
+    pieStyle: {
+      stroke: null,
+    },
+    color: ({ type }) => {
+      if (type === "Profiles") return "#1890ff";
+      if (type === "Companies") return "#52c41a";
+      if (type === "Deals Won") return "#faad14";
+      return "rgba(0, 0, 0, 0.1)";
     },
   };
   return (
@@ -77,13 +50,13 @@ const DashboardTotalCountCard = () => {
           whiteSpace: "nowrap",
         }}
       >
-        <ProfileOutlined />
+        {icon}
         <p
           style={{
             marginLeft: "8px",
           }}
         >
-          Number of profiles
+          {title}
         </p>
       </div>
       <div
@@ -103,10 +76,13 @@ const DashboardTotalCountCard = () => {
             fontVariantNumeric: "tabular-nums",
           }}
         >
-          34
+          {total}
         </p>
 
-        <Area {...config} style={{ width: "50%", height: "48px" }} />
+        <Pie
+          {...config}
+          style={{ width: "60%", height: "100px", marginTop: "-34px" }}
+        />
       </div>
     </Card>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import {
   Home,
   Login,
@@ -10,6 +10,8 @@ import {
   CreateCompany,
 } from "./pages/index";
 import List from "./pages/tasks/list";
+import CreateTaskPage from "./pages/tasks/create";
+import EditTaskPage from "./pages/tasks/edit";
 
 function App() {
   return (
@@ -25,8 +27,16 @@ function App() {
             <Route index element={<CompanyList />} />
             <Route path="new" element={<CreateCompany />} />
           </Route>
-          <Route path="tasks">
-            <Route index element={<List />} />
+          <Route
+            path="tasks"
+            element={
+              <List>
+                <Outlet />
+              </List>
+            }
+          >
+            <Route path="new" element={<CreateTaskPage />} />
+            <Route path="edit/:id" element={<EditTaskPage />} />
           </Route>
         </Route>
       </Routes>

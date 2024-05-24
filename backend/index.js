@@ -148,6 +148,44 @@ app.post("/updateTasks", async (req, res) => {
   }
 });
 
+app.delete("/deleteTask", async (req, res) => {
+  try {
+    if (!req.query.taskId) {
+      return res.status(400).json({ error: "Task ID required" });
+    }
+
+    let data = await Kanban.findOne({ _id: req.query.taskId });
+    if (!data) {
+      return res.status(400).json({ error: "No task found" });
+    }
+
+    await Kanban.deleteOne({ _id: req.query.taskId });
+    res
+      .status(200)
+      .json({ success: true, message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error deleting task" });
+  }
+});
+
+// app.post("/updateTaskData", async (req, res) => {
+//   try {
+//     if(!req.query.taskId) {
+//       res.status(400).json({ error: "Task ID required"})
+//     }
+
+//     let data = await Kanban.findOne({ _id: req.query.taskId });
+//     if (!data) {
+//       return res.status(400).json({ error: "No task found" });
+//     }
+
+//     if(!req.body.status && !req.body.title && !req.body.description)
+
+//   } catch (error) {
+
+//   }
+// })
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

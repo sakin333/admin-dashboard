@@ -1,4 +1,7 @@
 import {
+  DELETE_TASK_FAILURE,
+  DELETE_TASK_REQUEST,
+  DELETE_TASK_SUCCESS,
   FETCH_TASKS_FAILURE,
   FETCH_TASKS_REQUEST,
   FETCH_TASKS_SUCCESS,
@@ -17,6 +20,7 @@ const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_TASKS_REQUEST:
     case UPDATE_TASK_REQUEST:
+    case DELETE_TASK_REQUEST:
       return {
         ...state,
         loading: true,
@@ -37,8 +41,16 @@ const taskReducer = (state = initialState, action) => {
         ),
         error: "",
       };
+    case DELETE_TASK_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        tasks: state.tasks.filter((task) => task._id !== action.payload),
+        error: "",
+      };
     case FETCH_TASKS_FAILURE:
     case UPDATE_TASK_FAILURE:
+    case DELETE_TASK_FAILURE:
       return {
         ...state,
         loading: false,
