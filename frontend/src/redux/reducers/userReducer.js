@@ -2,6 +2,9 @@ import {
   FETCH_USERS_FAILURE,
   FETCH_USERS_REQUEST,
   FETCH_USERS_SUCCESS,
+  REGISTER_USERS_FAILURE,
+  REGISTER_USERS_REQUEST,
+  REGISTER_USERS_SUCCESS,
 } from "../types/userTypes";
 
 const initialState = {
@@ -13,6 +16,7 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_USERS_REQUEST:
+    case REGISTER_USERS_REQUEST:
       return {
         ...state,
         loading: true,
@@ -23,7 +27,14 @@ const userReducer = (state = initialState, action) => {
         users: action.payload,
         error: "",
       };
+    case REGISTER_USERS_SUCCESS:
+      return {
+        loading: false,
+        users: [...state.users, action.payload],
+        error: "",
+      };
     case FETCH_USERS_FAILURE:
+    case REGISTER_USERS_FAILURE:
       return {
         loading: false,
         users: [],

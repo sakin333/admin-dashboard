@@ -1,7 +1,6 @@
-export const snackbar = (api, message, icon, description = "") => {
-  api.open({
+export const snackbar = (api, type, message, description = "") => {
+  api[type]({
     message: message,
     description: description,
-    icon: icon,
   });
 };

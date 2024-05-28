@@ -38,7 +38,9 @@ const menuLinks = [
     key: "4",
     icon: <LogoutOutlined />,
     label: "Logout",
-    to: null,
+    onClick: () => {
+      localStorage.removeItem("user");
+    },
   },
 ];
 

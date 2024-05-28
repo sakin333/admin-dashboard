@@ -40,7 +40,43 @@ const stages = [
 ];
 
 app.post("/register", async (req, res) => {
-  res.json("hello world");
+  const { email, username, password, role } = req.body;
+  const avatarUrl = "link";
+
+  let repeatedEmail = await User.findOne({ email });
+  if (repeatedEmail) {
+    res.status(409).json({ error: "Account with same email alrady exists" });
+  } else {
+    let data = new User({
+      email,
+      username,
+      password,
+      avatarUrl,
+      role,
+    });
+    let result = await data.save();
+    result = result.toObject();
+
+    delete result.password;
+
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  if (!req.body.username && !req.body.password) {
+    res.status(400).json({ error: "Enter required fields " });
+  }
+
+  let data = await User.findOne(req.body).select("-password");
+  if (!data) {
+    res.status(400).json({ success: false, error: "Enter Valid Information" });
+  }
+
+  res.status(200).json({ success: true, data: data.toObject() });
 });
 
 app.get("/users", async (req, res) => {
@@ -145,6 +181,38 @@ app.post("/updateTasks", async (req, res) => {
     res.status(200).json({ success: true, data: result.toObject() });
   } catch (error) {
     res.status(400).json({ error: "Error updating task" });
+  }
+});
+
+app.post("/addTask", async (req, res) => {
+  try {
+    if (
+      !req.body.id &&
+      !req.body.title &&
+      !req.body.description &&
+      !req.body.dueDate &&
+      !req.body.completed &&
+      !req.body.stageId &&
+      !req.body.users &&
+      !req.body.createdAt &&
+      !req.body.updatedId
+    ) {
+      req.status(400).json({ error: "Please enter required fields" });
+    }
+
+    let repeatedTask = await Kanban.findOne({ title: req.body.title });
+    if (repeatedTask) {
+      res.status(409).json({ error: "Task with same task already exists" });
+    }
+
+    let data = new Kanban({ ...req.body });
+
+    let result = await data.save();
+    result = result.toObject();
+
+    res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    res.status(400).json({ error: "Error adding task" });
   }
 });
 

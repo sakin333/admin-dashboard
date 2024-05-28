@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 import {
   Home,
   Login,
@@ -14,8 +20,19 @@ import CreateTaskPage from "./pages/tasks/create";
 import EditTaskPage from "./pages/tasks/edit";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let user = localStorage.getItem("user");
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -40,7 +57,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

@@ -1,12 +1,60 @@
-import React from "react";
-import { Form, Input, Button, Checkbox, Typography, Card } from "antd";
+import React, { useState } from "react";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Typography,
+  Card,
+  notification,
+} from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { snackbar } from "../../utils/snackbar";
+import axios from "axios";
+import { BASE_URL } from "../../constants";
 
 const { Title } = Typography;
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(true);
+  const [api, contextHolder] = notification.useNotification();
+
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (!username && !password) {
+      snackbar(api, "error", "Enter all required fields");
+      return false;
+    }
+    const userData = {
+      username,
+      password,
+    };
+    axios
+      .post(`${BASE_URL}/login`, userData)
+      .then((response) => {
+        const result = response.data.data;
+
+        const USERDETAILS = {
+          id: result._id,
+          username: result.username,
+          email: result.email,
+        };
+        localStorage.setItem("user", JSON.stringify(USERDETAILS));
+        navigate("/dashboard");
+
+        snackbar(api, "success", `Welcome ${result.username}`);
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        snackbar(api, "error", errorMsg);
+      });
+  };
+
   return (
     <div className="login-form-container">
       <Card className="login-form-card">
@@ -33,6 +81,8 @@ const Login = () => {
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               size="large"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </Form.Item>
 
@@ -50,12 +100,19 @@ const Login = () => {
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               size="large"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
 
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              >
+                Remember me
+              </Checkbox>
             </Form.Item>
 
             <Link to="/forgotPassword" className="login-form-forgot-passsword">
@@ -69,6 +126,7 @@ const Login = () => {
               htmlType="submit"
               className="login-form-button"
               size="large"
+              onClick={handleLogin}
             >
               Login
             </Button>

@@ -47,7 +47,6 @@ const List = ({ children }) => {
 
   const handleAddCard = (label) => () => {
     dispatch(showModal());
-    console.log(modalState);
     navigate(`new?stage=${label}`);
   };
 

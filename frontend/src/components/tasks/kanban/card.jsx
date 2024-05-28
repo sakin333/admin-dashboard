@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   Avatar,
   Card,
@@ -28,9 +28,13 @@ const ProjectCard = ({ id, title, dueDate, users }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const deleteCard = () => {
-    dispatch(deleteTask(id));
-    snackbar(api, "Task deleted successfully", <DeleteOutlined />);
+  const deleteCard = async () => {
+    try {
+      await dispatch(deleteTask(id));
+      snackbar(api, "success", "Task deleted successfully");
+    } catch (error) {
+      snackbar(api, "error", "Failed to delete task");
+    }
   };
 
   const dropdownItems = useMemo(() => {
@@ -66,69 +70,75 @@ const ProjectCard = ({ id, title, dueDate, users }) => {
   }, [dueDate]);
 
   return (
-    <Card
-      size="small"
-      title={<p>{ellipsis(title, 20)}</p>}
-      onClick={() => edit()}
-      style={{
-        width: "100%",
-        padding: "4px 8px",
-      }}
-      extra={
-        <Dropdown
-          trigger={["click"]}
-          menu={{
-            items: dropdownItems,
+    <>
+      {contextHolder}
+      <Card
+        size="small"
+        title={<p>{ellipsis(title, 20)}</p>}
+        onClick={() => edit()}
+        style={{
+          width: "100%",
+          padding: "4px 8px",
+        }}
+        extra={
+          <Dropdown
+            trigger={["click"]}
+            menu={{
+              items: dropdownItems,
+            }}
+          >
+            <MenuOutlined style={{ fontSize: "18px" }} />
+          </Dropdown>
+        }
+      >
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
-          <MenuOutlined />
-        </Dropdown>
-      }
-    >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: "8px",
-        }}
-      >
-        {dueDateOptions && (
-          <Tag
-            icon={<ClockCircleOutlined style={{ fontSize: "12px" }} />}
-            style={{
-              padding: "0 4px",
-              backgroundColor:
-                dueDateOptions.color === "default" ? "transparent" : "unset",
-            }}
-            color={dueDateOptions.color}
-            bordered={dueDateOptions.color !== "default"}
-          >
-            {dueDateOptions.text}
-          </Tag>
-        )}
-        {!!users?.length && (
-          <Space
-            size={2}
-            wrap
-            direction="horizontal"
-            align="center"
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginLeft: "auto",
-              marginRight: 0,
-            }}
-          >
-            {users.map((user) => (
-              <Tooltip key={user.id} title={user.name}>
-                <Avatar src={user.avatarUrl} style={{ marginRight: "-8px" }} />
-              </Tooltip>
-            ))}
-          </Space>
-        )}
-      </div>
-    </Card>
+          {dueDateOptions && (
+            <Tag
+              icon={<ClockCircleOutlined style={{ fontSize: "12px" }} />}
+              style={{
+                padding: "0 4px",
+                backgroundColor:
+                  dueDateOptions.color === "default" ? "transparent" : "unset",
+              }}
+              color={dueDateOptions.color}
+              bordered={dueDateOptions.color !== "default"}
+            >
+              {dueDateOptions.text}
+            </Tag>
+          )}
+          {!!users?.length && (
+            <Space
+              size={2}
+              wrap
+              direction="horizontal"
+              align="center"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginLeft: "auto",
+                marginRight: 0,
+              }}
+            >
+              {users.map((user) => (
+                <Tooltip key={user.id} title={user.name}>
+                  <Avatar
+                    src={user.avatarUrl}
+                    style={{ marginRight: "-8px" }}
+                  />
+                </Tooltip>
+              ))}
+            </Space>
+          )}
+        </div>
+      </Card>
+    </>
   );
 };
 

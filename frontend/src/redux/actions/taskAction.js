@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  CREATE_TASK_FAILURE,
+  CREATE_TASK_REQUEST,
+  CREATE_TASK_SUCCESS,
   DELETE_TASK_FAILURE,
   DELETE_TASK_REQUEST,
   DELETE_TASK_SUCCESS,
@@ -111,13 +114,50 @@ export const deleteTask = (taskId) => {
   return (dispatch) => {
     dispatch(deleteTaskRequest());
     axios
-      .post(`${BASE_URL}/deleteTask?taskId=${taskId}`)
+      .delete(`${BASE_URL}/deleteTask?taskId=${taskId}`)
       .then((response) => {
         dispatch(deleteTaskSuccess(taskId));
       })
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(deleteTaskFailure(errorMsg));
+      });
+  };
+};
+
+export const createTaskRequest = () => {
+  return {
+    type: CREATE_TASK_REQUEST,
+  };
+};
+
+export const createTaskSuccess = (createdTask) => {
+  return {
+    type: CREATE_TASK_SUCCESS,
+    payload: createdTask,
+  };
+};
+
+export const createTaskFailure = (error) => {
+  return {
+    type: CREATE_TASK_FAILURE,
+    payload: error,
+  };
+};
+
+export const createTask = (data) => {
+  return (dispatch) => {
+    dispatch(createTaskRequest());
+    axios
+      .post(`${BASE_URL}/addTask`, data)
+      .then((response) => {
+        console.log(response);
+        const createdTask = response.data.data;
+        dispatch(createTaskSuccess(createdTask));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(createTaskFailure(errorMsg));
       });
   };
 };
