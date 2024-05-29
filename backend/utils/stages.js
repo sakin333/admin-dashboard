@@ -20,3 +20,5 @@ const stages = [
     value: "COMPLETE",
   },
 ];
+
+module.exports = stages;
