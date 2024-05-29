@@ -1,10 +1,11 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 
-const uri =
-  "mongodb+srv://beastglitch3:WzOCCPrMAVeyPoiO@cluster0.vuwn0mg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
 mongoose
-  .connect(uri)
+  .connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Database connection successfull");
   })
