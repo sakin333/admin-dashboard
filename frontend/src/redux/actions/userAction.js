@@ -69,7 +69,7 @@ export const registerUser = (data) => {
   return (dispatch) => {
     dispatch(registerUserRequest());
     axios
-      .post(`${BASE_URL}/register`, data)
+      .post(`${BASE_URL}/api/users/register`, data)
       .then((response) => {
         const registeredUser = response.data.data;
         dispatch(registerUserSuccess(registeredUser));
