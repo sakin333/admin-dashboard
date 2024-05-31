@@ -49,8 +49,8 @@ const Login = () => {
 
         snackbar(api, "success", `Welcome ${result.username}`);
       })
-      .catch((error) => {
-        const errorMsg = error.message;
+      .catch(({ response }) => {
+        const errorMsg = response.data.error;
         snackbar(api, "error", errorMsg);
       });
   };

@@ -30,7 +30,7 @@ export const fetchCompany = () => {
   return (dispatch) => {
     dispatch(fetchCompanyRequest());
     axios
-      .get(`${BASE_URL}/companies`)
+      .get(`${BASE_URL}/api/companies/companies`)
       .then((response) => {
         const companies = response.data;
         dispatch(fetchCompanySuccess(companies));

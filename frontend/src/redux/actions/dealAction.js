@@ -30,7 +30,7 @@ export const fetchDeals = () => {
   return (dispatch) => {
     dispatch(fetchDealsRequest());
     axios
-      .get(`${BASE_URL}/deals`)
+      .get(`${BASE_URL}/api/deals/deals`)
       .then((response) => {
         const deals = response.data;
         dispatch(fetchDealsSuccess(deals));

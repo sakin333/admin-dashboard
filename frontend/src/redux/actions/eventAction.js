@@ -30,7 +30,7 @@ export const fetchEvents = () => {
   return (dispatch) => {
     dispatch(fetchEventsRequest());
     axios
-      .get(`${BASE_URL}/eventsList`)
+      .get(`${BASE_URL}/api/events/eventsList`)
       .then((response) => {
         const events = response.data;
         dispatch(fetchEventsSuccess(events));

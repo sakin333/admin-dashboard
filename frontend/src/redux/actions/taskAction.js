@@ -39,7 +39,7 @@ export const fetchTasks = () => {
   return (dispatch) => {
     dispatch(fetchTasksRequest());
     axios
-      .get(`${BASE_URL}/getTasks`)
+      .get(`${BASE_URL}/api/kanban/getTasks`)
       .then((response) => {
         const tasks = response.data.data;
         dispatch(fetchTasksSuccess(tasks));
@@ -75,7 +75,7 @@ export const updateTask = (taskId, overColumnId, activeTaskStageId) => {
   return (dispatch) => {
     dispatch(updateTaskRequest());
     axios
-      .post(`${BASE_URL}/updateTasks?taskId=${taskId}`, {
+      .post(`${BASE_URL}/api/kanban/updateTask?taskId=${taskId}`, {
         overColumnId,
         activeTaskStageId,
       })
@@ -114,7 +114,7 @@ export const deleteTask = (taskId) => {
   return (dispatch) => {
     dispatch(deleteTaskRequest());
     axios
-      .delete(`${BASE_URL}/deleteTask?taskId=${taskId}`)
+      .delete(`${BASE_URL}/api/kanban/deleteTask?taskId=${taskId}`)
       .then((response) => {
         dispatch(deleteTaskSuccess(taskId));
       })
@@ -149,7 +149,7 @@ export const createTask = (data) => {
   return (dispatch) => {
     dispatch(createTaskRequest());
     axios
-      .post(`${BASE_URL}/addTask`, data)
+      .post(`${BASE_URL}/api/kanban/addTask`, data)
       .then((response) => {
         console.log(response);
         const createdTask = response.data.data;

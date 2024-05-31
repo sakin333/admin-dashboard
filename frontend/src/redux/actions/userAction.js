@@ -33,7 +33,7 @@ export const fetchUsers = () => {
   return (dispatch) => {
     dispatch(fetchUsersRequest());
     axios
-      .get(`${BASE_URL}/users`)
+      .get(`${BASE_URL}/api/users/getUsers`)
       .then((response) => {
         const users = response.data.data;
         dispatch(fetchUsersSuccess(users));

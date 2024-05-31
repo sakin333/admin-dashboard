@@ -1,4 +1,5 @@
 const Kanban = require("../models/kanban");
+const stages = require("../utils/stages");
 
 exports.getTasks = async (req, res) => {
   try {
@@ -47,7 +48,7 @@ exports.addTask = async (req, res) => {
   }
 };
 
-exports.updateTasks = async (req, res) => {
+exports.updateTask = async (req, res) => {
   try {
     if (!req.query.taskId) {
       return res.status(400).json({ error: "Task ID required" });
@@ -73,6 +74,7 @@ exports.updateTasks = async (req, res) => {
 
     res.status(200).json({ success: true, data: result.toObject() });
   } catch (error) {
+    console.log("Error: ", error);
     res.status(400).json({ error: "Error updating task" });
   }
 };
