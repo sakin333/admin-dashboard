@@ -14,3 +14,71 @@ exports.companies = async (req, res) => {
     });
   }
 };
+
+exports.editCompany = async (req, res) => {
+  try {
+    if (!req.query.companyId) {
+      return res.status(400).json({ error: "Company Id required" });
+    }
+
+    let data = await Company.findOne({ _id: req.query.companyId });
+    if (!data) {
+      return res.status(400).json({ error: "No company found " });
+    }
+
+    const fieldsToUpdate = {};
+    const allowedFields = [
+      "id",
+      "name",
+      "description",
+      "dealsAggregate",
+      "industry",
+      "location",
+      "foundedYear",
+      "employees",
+      "revenue",
+      "website",
+      "contactEmail",
+    ];
+
+    allowedFields.forEach((field) => {
+      if (req.body[field]) {
+        fieldsToUpdate[field] = req.body[field];
+      }
+    });
+
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      return res.status(400).json({ error: "Please enter required fields" });
+    }
+
+    let result = await Company.findOneAndUpdate(
+      { _id: req.query.companyId },
+      { $set: fieldsToUpdate },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    res.status(400).json({ error: "Error editing company details" });
+  }
+};
+
+exports.deleteCompany = async (req, res) => {
+  try {
+    if (!req.query.companyId) {
+      return res.status(400).json({ error: "Company Id required" });
+    }
+
+    let data = await Company.findOne({ _id: req.query.companyId });
+    if (!data) {
+      return res.status(400).json({ error: "No company found " });
+    }
+
+    await Company.deleteOne({ _id: req.body.companyId });
+    res
+      .status(200)
+      .json({ success: true, message: "Company deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ error: "Error deleting company" });
+  }
+};

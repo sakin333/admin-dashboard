@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import CompanyList from "./company-list";
 import { Avatar, Form, Input, Modal, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,66 +28,64 @@ const CreateCompany = () => {
   };
 
   return (
-    <CompanyList>
-      <Modal
-        mask={true}
-        open={modalState}
-        onCancel={handleCancel}
-        title="Create Company"
-        width={512}
-        okText="Save"
-        onOk={handleCreateFormSubmission}
-      >
-        <Form layout="vertical">
-          <Form.Item
-            label="Company name"
-            name="name"
-            rules={[{ required: true }]}
-          >
-            <Input
-              placeholder="Please enter a company name"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item
-            label="Sales owner"
-            name="salesOwnerId"
-            rules={[{ required: true }]}
-          >
-            <Select
-              placeholder="Please select sales owner"
-              options={
-                users?.data?.map((user) => ({
-                  value: user._id,
-                  label: (
-                    <div
+    <Modal
+      mask={true}
+      open={modalState}
+      onCancel={handleCancel}
+      title="Create Company"
+      width={512}
+      okText="Save"
+      onOk={handleCreateFormSubmission}
+    >
+      <Form layout="vertical">
+        <Form.Item
+          label="Company name"
+          name="name"
+          rules={[{ required: true }]}
+        >
+          <Input
+            placeholder="Please enter a company name"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Sales owner"
+          name="salesOwnerId"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="Please select sales owner"
+            options={
+              users.map((user) => ({
+                value: user._id,
+                label: (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <Avatar
+                      size="small"
+                      shape="circle"
+                      src={user.avatarUrl ?? "SM"}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
+                        marginTop: "-6px",
                       }}
-                    >
-                      <Avatar
-                        size="small"
-                        shape="circle"
-                        src={user.avatarUrl ?? "SM"}
-                        style={{
-                          marginTop: "-6px",
-                        }}
-                      />
-                      <p>{user.username}</p>
-                    </div>
-                  ),
-                })) ?? []
-              }
-              value={owner}
-              onChange={(value) => setOwner(value)}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-    </CompanyList>
+                    />
+                    <p>{user.username}</p>
+                  </div>
+                ),
+              })) ?? []
+            }
+            value={owner}
+            onChange={(value) => setOwner(value)}
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
   );
 };
 

@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import {
   Home,
   Login,
@@ -13,11 +7,12 @@ import {
   ForgotPassword,
   Dashboard,
   CompanyList,
-  CreateCompany,
 } from "./pages/index";
 import List from "./pages/tasks/list";
 import CreateTaskPage from "./pages/tasks/create";
 import EditTaskPage from "./pages/tasks/edit";
+import CreateCompany from "./pages/company/create-new-company";
+import EditCompany from "./pages/company/edit-company";
 
 function App() {
   const navigate = useNavigate();
@@ -40,9 +35,16 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="companies">
-            <Route index element={<CompanyList />} />
+          <Route
+            path="companies"
+            element={
+              <CompanyList>
+                <Outlet />
+              </CompanyList>
+            }
+          >
             <Route path="new" element={<CreateCompany />} />
+            <Route path="edit/:id" element={<EditCompany />} />
           </Route>
           <Route
             path="tasks"

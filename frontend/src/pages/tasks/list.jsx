@@ -65,7 +65,7 @@ const List = ({ children }) => {
         }}
       >
         {loading ? (
-          <Spin tip="Loading" size="large" style={{ marginTop: "-120px" }} />
+          <Spin size="large" style={{ marginTop: "-120px" }} />
         ) : (
           <KanbanBoardContainer>
             <KanbanBoard tasks={taskStages} handleUpdateTask={handleUpdateTask}>
