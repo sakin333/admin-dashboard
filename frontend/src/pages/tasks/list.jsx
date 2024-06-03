@@ -19,7 +19,6 @@ import { showModal } from "../../redux/actions/modalAction";
 
 const List = ({ children }) => {
   const { tasks, loading } = useSelector((state) => state.task);
-  const modalState = useSelector((state) => state.modal);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,6 +61,7 @@ const List = ({ children }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          overflowX: "auto",
         }}
       >
         {loading ? (

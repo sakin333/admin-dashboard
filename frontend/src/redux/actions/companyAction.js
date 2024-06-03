@@ -111,7 +111,7 @@ export const deleteCompany = (companyId) => {
   return (dispatch) => {
     dispatch(deleteCompanyRequest());
     axios
-      .post(`${BASE_URL}/api/companies/deleteCompany?companyId=${companyId}`)
+      .delete(`${BASE_URL}/api/companies/deleteCompany?companyId=${companyId}`)
       .then((response) => {
         dispatch(deleteCompanySuccess(companyId));
       })

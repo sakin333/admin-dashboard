@@ -79,11 +79,19 @@ const CompanyList = ({ children }) => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        height: "93vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        overflowX: "auto",
+      }}
+    >
       {loading ? (
         <Spin size="large" style={{ marginTop: "-120px" }} />
       ) : (
-        <>
+        <div>
           <List
             header={
               <div
@@ -201,9 +209,9 @@ const CompanyList = ({ children }) => {
             </Table>
           </List>
           {children}
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

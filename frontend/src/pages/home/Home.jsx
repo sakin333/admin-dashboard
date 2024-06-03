@@ -58,14 +58,8 @@ const Home = () => {
   };
 
   return (
-    <Layout>
-      <Sider
-        theme="light"
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        style={{ height: "auto" }}
-      >
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
         <div className="home-logo">Logo</div>
 
         <Menu mode="inline" onClick={handleMenuClick} items={menuLinks} />
