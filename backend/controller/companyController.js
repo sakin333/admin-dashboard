@@ -28,7 +28,6 @@ exports.editCompany = async (req, res) => {
 
     const fieldsToUpdate = {};
     const allowedFields = [
-      "id",
       "name",
       "description",
       "dealsAggregate",
@@ -42,8 +41,14 @@ exports.editCompany = async (req, res) => {
     ];
 
     allowedFields.forEach((field) => {
-      if (req.body[field]) {
-        fieldsToUpdate[field] = req.body[field];
+      if (req.body[field] !== undefined) {
+        if (field === "location") {
+          fieldsToUpdate["location.city"] = req.body[field];
+        } else if (field === "dealsAggregate") {
+          fieldsToUpdate["dealsAggregate.sum.value"] = req.body[field];
+        } else {
+          fieldsToUpdate[field] = req.body[field];
+        }
       }
     });
 
