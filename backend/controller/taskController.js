@@ -98,3 +98,46 @@ exports.deleteTask = async (req, res) => {
     res.status(500).json({ error: "Error deleting task" });
   }
 };
+
+exports.editTask = async (req, res) => {
+  try {
+    if (!req.query.taskId) {
+      return res.status(400).json({ error: "Task Id required" });
+    }
+
+    let data = await Kanban.findOne({ _id: req.query.taskId });
+    if (!data) {
+      return res.status(400).json({ error: "No task found " });
+    }
+
+    const fieldsToUpdate = {};
+    const allowedFields = [
+      "title",
+      "description",
+      "dueDate",
+      "users",
+      "stageId",
+    ];
+
+    allowedFields.forEach((field) => {
+      if (req.body[field]) {
+        fieldsToUpdate[field] = req.body[field];
+      }
+    });
+
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      return res.status(400).json({ error: "Please enter required fields" });
+    }
+
+    let result = await Kanban.findOneAndUpdate(
+      { _id: req.query.taskId },
+      { $set: fieldsToUpdate },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ error: "Error editing task" });
+  }
+};

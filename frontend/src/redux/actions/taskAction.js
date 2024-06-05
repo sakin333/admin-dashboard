@@ -6,6 +6,9 @@ import {
   DELETE_TASK_FAILURE,
   DELETE_TASK_REQUEST,
   DELETE_TASK_SUCCESS,
+  EDIT_TASK_FAILURE,
+  EDIT_TASK_REQUEST,
+  EDIT_TASK_SUCCESS,
   FETCH_TASKS_FAILURE,
   FETCH_TASKS_REQUEST,
   FETCH_TASKS_SUCCESS,
@@ -158,6 +161,42 @@ export const createTask = (data) => {
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(createTaskFailure(errorMsg));
+      });
+  };
+};
+
+export const editTaskRequest = () => {
+  return {
+    type: EDIT_TASK_REQUEST,
+  };
+};
+
+export const editTaskSuccess = (editedTask) => {
+  return {
+    type: EDIT_TASK_SUCCESS,
+    payload: editedTask,
+  };
+};
+
+export const editTaskFailure = (error) => {
+  return {
+    type: EDIT_TASK_FAILURE,
+    payload: error,
+  };
+};
+
+export const editTask = (taskId, data) => {
+  return (dispatch) => {
+    dispatch(editTaskRequest());
+    axios
+      .post(`${BASE_URL}/api/kanban/editTask?taskId=${taskId}`, data)
+      .then((response) => {
+        const editedTask = response.data.data;
+        dispatch(editTaskSuccess(editedTask));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(editTaskFailure(errorMsg));
       });
   };
 };

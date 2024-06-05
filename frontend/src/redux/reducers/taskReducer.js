@@ -5,6 +5,9 @@ import {
   DELETE_TASK_FAILURE,
   DELETE_TASK_REQUEST,
   DELETE_TASK_SUCCESS,
+  EDIT_TASK_FAILURE,
+  EDIT_TASK_REQUEST,
+  EDIT_TASK_SUCCESS,
   FETCH_TASKS_FAILURE,
   FETCH_TASKS_REQUEST,
   FETCH_TASKS_SUCCESS,
@@ -25,6 +28,7 @@ const taskReducer = (state = initialState, action) => {
     case UPDATE_TASK_REQUEST:
     case CREATE_TASK_REQUEST:
     case DELETE_TASK_REQUEST:
+    case EDIT_TASK_REQUEST:
       return {
         ...state,
         loading: true,
@@ -37,6 +41,7 @@ const taskReducer = (state = initialState, action) => {
         error: "",
       };
     case UPDATE_TASK_SUCCESS:
+    case EDIT_TASK_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -46,7 +51,6 @@ const taskReducer = (state = initialState, action) => {
         error: "",
       };
     case CREATE_TASK_SUCCESS:
-      console.log("payload data", action.payload);
       return {
         ...state,
         loading: false,
@@ -64,6 +68,7 @@ const taskReducer = (state = initialState, action) => {
     case UPDATE_TASK_FAILURE:
     case CREATE_TASK_FAILURE:
     case DELETE_TASK_FAILURE:
+    case EDIT_TASK_FAILURE:
       return {
         ...state,
         loading: false,
