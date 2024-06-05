@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   DashboardTotalCountCard,
   DealsCharts,
@@ -11,8 +11,34 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import SalesPerformanceCard from "../../components/home/sales-performance";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../../redux/actions/userAction";
+import { fetchCompany } from "../../redux/actions/companyAction";
+import { fetchDeals } from "../../redux/actions/dealAction";
 
 const Dashboard = () => {
+  const [noOfUsers, setNumberOfUsers] = useState(0);
+  const [noOfCompanies, setNumberOfCompanies] = useState(0);
+  const [noOfDealsWon, setNumberOfDealsWon] = useState(0);
+
+  const { users } = useSelector((state) => state.user);
+  const { company } = useSelector((state) => state.company);
+  const { deals } = useSelector((state) => state.deal);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+    dispatch(fetchCompany());
+    dispatch(fetchDeals());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setNumberOfUsers(users.length || 0);
+    setNumberOfCompanies(company.length || 0);
+    setNumberOfDealsWon(deals.data.length || 0);
+  }, [users, company, deals]);
+
   const salesData = [
     {
       product: "Product A",
@@ -60,10 +86,10 @@ const Dashboard = () => {
           <DashboardTotalCountCard
             title="Number of profiles"
             icon={<ProfileOutlined />}
-            total={34}
+            total={noOfUsers}
             data={[
-              { type: "Profiles", value: 34 },
-              { type: "Other", value: 100 - 34 },
+              { type: "Profiles", value: noOfUsers },
+              { type: "Other", value: 100 - noOfUsers },
             ]}
           />
         </Col>
@@ -71,10 +97,10 @@ const Dashboard = () => {
           <DashboardTotalCountCard
             title="Number of companies"
             icon={<TeamOutlined />}
-            total={12}
+            total={noOfCompanies}
             data={[
-              { type: "Companies", value: 12 },
-              { type: "Other", value: 100 - 12 },
+              { type: "Companies", value: noOfCompanies },
+              { type: "Other", value: 100 - noOfCompanies },
             ]}
           />
         </Col>
@@ -82,10 +108,10 @@ const Dashboard = () => {
           <DashboardTotalCountCard
             title="Number of deals won"
             icon={<DollarOutlined />}
-            total={20}
+            total={noOfDealsWon}
             data={[
-              { type: "Deals Won", value: 20 },
-              { type: "Other", value: 100 - 20 },
+              { type: "Deals Won", value: noOfDealsWon },
+              { type: "Other", value: 100 - noOfDealsWon },
             ]}
           />
         </Col>

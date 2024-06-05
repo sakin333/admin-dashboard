@@ -6,6 +6,7 @@ import CustomAvatar from "../custom-avatar";
 const CurrentUser = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
+  const [userInitials, setUserInitials] = useState("");
 
   const handleAvatarClicked = () => {
     setIsOpen(!isOpen);
@@ -22,6 +23,19 @@ const CurrentUser = () => {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      const array = currentUser.split(" ");
+      let initials = "";
+      if (array.length > 1) {
+        initials = array[0].charAt(0) + array[array.length - 1].charAt(0);
+      } else {
+        initials = array[0].charAt(0);
+      }
+      setUserInitials(initials.toUpperCase());
+    }
+  }, [currentUser]);
 
   const content = (
     <div
@@ -65,7 +79,10 @@ const CurrentUser = () => {
         overlayStyle={{ zIndex: 999 }}
         content={content}
       >
-        <CustomAvatar onClick={handleAvatarClicked} />
+        <CustomAvatar
+          onClick={handleAvatarClicked}
+          userInitials={userInitials}
+        />
       </Popover>
       {}
     </>
