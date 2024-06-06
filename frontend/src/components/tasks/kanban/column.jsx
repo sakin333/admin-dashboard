@@ -3,15 +3,7 @@ import { Badge, Button, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import React from "react";
 
-const KanbanColumn = ({
-  children,
-  id,
-  title,
-  description,
-  count,
-  data,
-  onAddClick,
-}) => {
+const KanbanColumn = ({ children, id, title, count, onAddClick }) => {
   const { isOver, setNodeRef } = useDroppable({
     id: id,
   });

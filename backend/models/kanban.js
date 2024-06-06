@@ -9,9 +9,11 @@ const kanbanSchema = new mongoose.Schema({
   stageId: String,
   users: [
     {
-      id: String,
-      name: String,
+      email: String,
+      username: String,
+      password: String,
       avatarUrl: String,
+      role: String,
     },
   ],
   createdAt: String,

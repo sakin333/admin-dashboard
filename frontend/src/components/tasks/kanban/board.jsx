@@ -6,6 +6,8 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { useDispatch } from "react-redux";
+import { setActiveId } from "../../../redux/actions/activeIdaction";
 
 export const KanbanBoardContainer = ({ children }) => {
   return (
@@ -36,6 +38,8 @@ export const KanbanBoardContainer = ({ children }) => {
 };
 
 export const KanbanBoard = ({ children, tasks, handleUpdateTask }) => {
+  const dispatch = useDispatch();
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -55,6 +59,8 @@ export const KanbanBoard = ({ children, tasks, handleUpdateTask }) => {
         handleUpdateTask(active.id, activeTask.stageId, overColumn);
       }
     }
+
+    dispatch(setActiveId(null));
   };
 
   return (
@@ -62,6 +68,7 @@ export const KanbanBoard = ({ children, tasks, handleUpdateTask }) => {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      onDragStart={(event) => dispatch(setActiveId(event.active.id))}
     >
       {children}
     </DndContext>

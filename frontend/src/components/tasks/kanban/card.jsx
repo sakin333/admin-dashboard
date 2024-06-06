@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   Avatar,
   Card,
@@ -21,12 +21,17 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "../../../redux/actions/taskAction";
 import { snackbar } from "../../../utils/snackbar";
+import { showModal } from "../../../redux/actions/modalAction";
 
 const ProjectCard = ({ id, title, dueDate, users }) => {
   const [api, contextHolder] = notification.useNotification();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   console.log(users, "from card");
+  // }, []);
 
   const deleteCard = async () => {
     try {
@@ -45,6 +50,7 @@ const ProjectCard = ({ id, title, dueDate, users }) => {
         icon: <EyeOutlined />,
         onClick: () => {
           navigate(`edit/${id}`);
+          dispatch(showModal());
         },
       },
       {
@@ -75,7 +81,6 @@ const ProjectCard = ({ id, title, dueDate, users }) => {
       <Card
         size="small"
         title={<p>{ellipsis(title, 20)}</p>}
-        onClick={() => edit()}
         style={{
           width: "100%",
           padding: "4px 8px",
@@ -126,14 +131,16 @@ const ProjectCard = ({ id, title, dueDate, users }) => {
                 marginRight: 0,
               }}
             >
-              {users.map((user) => (
-                <Tooltip key={user.id} title={user.name}>
-                  <Avatar
-                    src={user.avatarUrl}
-                    style={{ marginRight: "-8px" }}
-                  />
-                </Tooltip>
-              ))}
+              {users
+                .filter((user) => user)
+                .map((user) => (
+                  <Tooltip key={user?.id} title={user?.name}>
+                    <Avatar
+                      src={user?.avatarUrl}
+                      style={{ marginRight: "-8px" }}
+                    />
+                  </Tooltip>
+                ))}
             </Space>
           )}
         </div>

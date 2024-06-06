@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar } from "antd";
 
-const CustomAvatar = ({ onClick }) => {
+const CustomAvatar = ({ onClick, userInitials }) => {
   return (
     <Avatar
       alt={"Sakin Maharjan"}
@@ -16,7 +16,7 @@ const CustomAvatar = ({ onClick }) => {
       }}
       onClick={onClick}
     >
-      SM
+      {userInitials || "AD"}
     </Avatar>
   );
 };
